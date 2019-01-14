@@ -1,6 +1,7 @@
 package com.creditmanage.core.basic;
 
 import com.creditmanage.core.ControllerUtils;
+import com.creditmanage.core.query.Query;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -13,6 +14,7 @@ public abstract class BasicController<T extends BasicModel> {
 
     @PostMapping("queryOne")
     public Map<String, Object> queryOne(@RequestBody T t) {
+        this.initializedModel(t);
         try {
             return ControllerUtils.success(getBasicService().queryOne(t));
         } catch (Exception e) {
@@ -23,6 +25,7 @@ public abstract class BasicController<T extends BasicModel> {
 
     @PostMapping("queryPage")
     public Map<String, Object> queryPage(@RequestBody T t) {
+        this.initializedModel(t);
         try {
             return ControllerUtils.success(getBasicService().queryPage(t));
         } catch (Exception e) {
@@ -33,6 +36,7 @@ public abstract class BasicController<T extends BasicModel> {
 
     @PostMapping("queryAll")
     public Map<String, Object> queryAll(@RequestBody T t) {
+        this.initializedModel(t);
         try {
             return ControllerUtils.success(getBasicService().queryAll(t));
         } catch (Exception e) {
@@ -43,6 +47,7 @@ public abstract class BasicController<T extends BasicModel> {
 
     @PostMapping("queryCount")
     public Map<String, Object> queryCount(@RequestBody T t) {
+        this.initializedModel(t);
         try {
             return ControllerUtils.success(getBasicService().queryCount(t));
         } catch (Exception e) {
@@ -110,6 +115,12 @@ public abstract class BasicController<T extends BasicModel> {
         } catch (Exception e) {
             e.printStackTrace();
             return ControllerUtils.error(e);
+        }
+    }
+
+    private void initializedModel(T t) {
+        if (null != t && null == t.getQuery()) {
+            t.setQuery(new Query());
         }
     }
 }

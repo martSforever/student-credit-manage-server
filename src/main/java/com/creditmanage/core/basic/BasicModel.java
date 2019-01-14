@@ -6,7 +6,7 @@ public class BasicModel {
     private int id;
     private String createdAt;
     private String updatedAt;
-    private Query query = new Query();
+    private Query query;
 
     public Query getQuery() {
         return query;
