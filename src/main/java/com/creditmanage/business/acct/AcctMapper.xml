@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.creditmanage.business.acct.AcctMapper">
+
+    <parameterMap id="paramMap" type="com.creditmanage.business.acct.Acct"/>
+    <resultMap id="resultMap" type="com.creditmanage.business.acct.Acct"/>
+
+    <sql id="selectAll">
+        select
+            t1.id                                           as id,
+            date_format(t1.created_at, '%Y-%m-%d %H:%i:%S') as createdAt,
+            date_format(t1.updated_at, '%Y-%m-%d %H:%i:%S') as updatedAt,
+            t1.acct_code                                    as acctCode,
+            date_format(t1.birthday, '%Y-%m-%d %H:%i:%S')   as birthday,
+            t1.acct_type                                    as acctType,
+            t1.acct_agency_id                               as acctAgencyId,
+            t1.acct_name                                    as acctName,
+            t1.acct_age                                     as acctAge
+    </sql>
+    <sql id="fromAll">
+        from acct t1
+    </sql>
+    <sql id="whereAll">
+        <foreach collection="query.filters" open="where 1=1 " item="item">
+            ${item.getFilterSql()}
+        </foreach>
+    </sql>
+    <sql id="orderAll">
+        <!--<if test="query.orders.size()>0">-->
+        <foreach collection="query.orders" open="order by" item="item" separator=",">
+            ${item.field} ${item.orderVal()}
+        </foreach>
+        <!--</if>-->
+    </sql>
+
+    <select id="queryOne" resultMap="resultMap" parameterMap="paramMap">
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        where t1.id = #{id}
+    </select>
+
+    <select id="queryAll" resultMap="resultMap" parameterMap="paramMap">
+        select * from (
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        ) as temp
+        <include refid="whereAll"/>
+        <include refid="orderAll"/>
+    </select>
+
+    <select id="queryPage" resultMap="resultMap" parameterMap="paramMap">
+        select * from (
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        ) as temp
+        <include refid="whereAll"/>
+        <include refid="orderAll"/>
+        limit ${(query.page-1)*query.pageSize},${query.pageSize}
+    </select>
+
+    <select id="queryCount" resultType="java.lang.Integer" parameterMap="paramMap">
+        select count(1) from (
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        ) as temp
+        <include refid="whereAll"/>
+    </select>
+
+    <insert id="insert" parameterMap="paramMap">
+        insert into
+            acct
+            (id, created_at, updated_at, acct_code, birthday, acct_type, acct_agency_id, acct_name)
+            value
+            (#{id}, now(), now(), #{acctCode}, date_format(#{birthday}, '%Y-%m-%d'), #{acctType},
+             #{acctAgencyId}, #{acctName})
+    </insert>
+
+    <update id="update" parameterMap="paramMap">
+        update acct
+        <set>
+            updated_at = now(),
+            <if test="acctCode!=null and acctCode!=''">acct_code = #{acctCode},</if>
+            <if test="birthday !=null and birthday !=''">birthday = #{birthday},</if>
+            <if test="acctType !=null and acctType !=''">acct_type = #{acctType},</if>
+            <if test="acctAgencyId !=null and acctAgencyId !=''">acct_agency_id = #{acctAgencyId},</if>
+            <if test="acctName !=null and acctName !=''">acct_name = #{acctName},</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterMap="paramMap">
+        delete from acct
+        where id = #{id}
+    </delete>
+
+</mapper>
