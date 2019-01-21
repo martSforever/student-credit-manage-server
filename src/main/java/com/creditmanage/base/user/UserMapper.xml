@@ -17,7 +17,8 @@
             t1.code                                         as code,
             t1.role                                         as role,
             t1.tel                                          as tel,
-            t1.email                                        as email
+            t1.email                                        as email,
+            t1.name                                         as name
     </sql>
     <sql id="fromAll">
         from user t1
@@ -71,9 +72,9 @@
     <insert id="insert" parameterMap="paramMap">
         insert into
             user
-            (id, created_at, updated_at, code, role, username, password, tel, email, class_id)
+            (id, created_at, updated_at, code, role, username, password, tel, email, class_id, name)
         values
-            (#{id},now(),now(),#{code},#{role},#{username},#{password},#{tel},#{email},#{classId})
+            (#{id}, now(), now(), #{code}, #{role}, #{username}, #{password}, #{tel}, #{email}, #{classId}, #{name})
     </insert>
 
     <update id="update" parameterMap="paramMap">
@@ -87,6 +88,7 @@
             <if test="tel !=null and tel !=''">tel = #{tel},</if>
             <if test="email !=null and email !=''">email = #{email},</if>
             <if test="classId !=null and classId !=''">class_id = #{classId},</if>
+            <if test="name !=null and name !=''">name = #{name},</if>
         </set>
         where id = #{id}
     </update>

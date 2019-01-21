@@ -10,6 +10,7 @@ public class User extends BasicModel {
     private String role;                            //角色
     private String tel;                             //电话号码
     private String email;                           //邮箱地址
+    private String name;                            //姓名
     private String classId;                         //所属班级id
 
     public String getUsername() {
@@ -66,5 +67,13 @@ public class User extends BasicModel {
 
     public void setClassId(String classId) {
         this.classId = classId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
