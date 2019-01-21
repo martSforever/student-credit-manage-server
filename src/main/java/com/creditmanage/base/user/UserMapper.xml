@@ -70,25 +70,28 @@
 
     <insert id="insert" parameterMap="paramMap">
         insert into
-            lov
-            (id, created_at, updated_at, label, code, type)
-            value
-            (#{id}, now(), now(), #{label}, #{code}, #{type})
+            user
+            (id, created_at, updated_at, code, role, username, password, tel, email, class_id)
+        values
+            (#{id},now(),now(),#{code},#{role},#{username},#{password},#{tel},#{email},#{classId})
     </insert>
 
     <update id="update" parameterMap="paramMap">
-        update lov
+        update user
         <set>
             updated_at = now(),
-            <if test="id !=null and id !=''">id = #{id},</if>
-            <if test="label !=null and label !=''">label = #{label},</if>
             <if test="code !=null and code !=''">code = #{code},</if>
-            <if test="type !=null and type !=''">type = #{type},</if>
+            <if test="role !=null and role !=''">role = #{role},</if>
+            <if test="username !=null and username !=''">username = #{username},</if>
+            <if test="password !=null and password !=''">password = #{password},</if>
+            <if test="tel !=null and tel !=''">tel = #{tel},</if>
+            <if test="email !=null and email !=''">email = #{email},</if>
+            <if test="classId !=null and classId !=''">class_id = #{classId},</if>
         </set>
         where id = #{id}
     </update>
     <delete id="delete" parameterMap="paramMap">
-        delete from lov
+        delete from user
         where id = #{id}
     </delete>
 

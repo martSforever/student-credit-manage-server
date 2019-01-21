@@ -6,6 +6,16 @@ public class Filter {
     private Boolean dateFormat = false;
     private String operator;
 
+    public Filter() {
+    }
+
+    public Filter(String field, String value, Boolean dateFormat, String operator) {
+        this.field = field;
+        this.value = value;
+        this.dateFormat = dateFormat;
+        this.operator = operator;
+    }
+
     public String getField() {
         return field;
     }

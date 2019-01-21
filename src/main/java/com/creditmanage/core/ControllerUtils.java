@@ -14,6 +14,7 @@ public class ControllerUtils {
 
     public static Map<String, Object> error(Object obj) {
         Map<String, Object> ret = new HashMap<>();
+        ret.put("ret", obj.toString());
         ret.put("code", 1);
         return ret;
     }
