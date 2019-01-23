@@ -1,5 +1,7 @@
 package com.creditmanage.core.query;
 
+import org.apache.commons.lang.StringUtils;
+
 public class Filter {
     private String field;
     private String value;
@@ -57,6 +59,8 @@ public class Filter {
     }
 
     public String filterValue() {
+        if (StringUtils.isBlank(this.operator))
+            this.operator = "=";
         switch (this.operator) {
             case "=#":
                 return " IS NULL ";
