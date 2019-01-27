@@ -14,10 +14,15 @@
             date_format(t1.updated_at, '%Y-%m-%d %H:%i:%S') as updatedAt,
 
             t1.grade                                        as grade,
-            t1.cls                                          as cls
+            t1.cls                                          as cls,
+            t1.teacher_id                                   as teacherId,
+
+            t2.name                                         as teacherName,
+            concat(t1.grade, '级', t1.cls, '班')             as fullName
     </sql>
     <sql id="fromAll">
         from cls t1
+        left join user t2 on (t1.teacher_id = t2.id)
     </sql>
     <sql id="whereAll">
         <foreach collection="query.filters" open="where 1=1 " item="item">
@@ -68,9 +73,9 @@
     <insert id="insert" parameterMap="paramMap">
         insert into
             cls
-            (id, created_at, updated_at, grade, cls)
+            (id, created_at, updated_at, grade, cls, teacher_id)
             value
-            (#{id}, now(), now(), #{grade}, #{cls})
+            (#{id}, now(), now(), #{grade}, #{cls}, #{teacherId})
     </insert>
 
     <update id="update" parameterMap="paramMap">
@@ -79,6 +84,7 @@
             updated_at = now(),
             <if test="grade !=null and grade !=''">grade = #{grade},</if>
             <if test="cls !=null and cls !=''">cls = #{cls},</if>
+            <if test="teacherId !=null and teacherId !=''">teacher_id = #{teacherId},</if>
         </set>
         where id = #{id}
     </update>

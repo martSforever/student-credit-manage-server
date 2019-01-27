@@ -18,10 +18,14 @@
             t1.role                                         as role,
             t1.tel                                          as tel,
             t1.email                                        as email,
-            t1.name                                         as name
+            t1.name                                         as name,
+            t1.class_id                                     as classId,
+            concat(t2.grade, '级', t2.cls, '班')              as className
+
     </sql>
     <sql id="fromAll">
         from user t1
+        left join cls t2 on t1.class_id = t2.id
     </sql>
     <sql id="whereAll">
         <foreach collection="query.filters" open="where 1=1 " item="item">
