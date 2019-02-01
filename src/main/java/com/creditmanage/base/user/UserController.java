@@ -66,6 +66,15 @@ public class UserController extends BasicController<User> {
             e.printStackTrace();
             return ControllerUtils.error(e.getMessage());
         }
+    }
 
+    /**
+     * 注册用户
+     * @param user
+     * @return
+     */
+    @PostMapping("addUser")
+    public Map<String, Object> addUser(@RequestBody User user) {
+        return userService.addUser(user);
     }
 }
