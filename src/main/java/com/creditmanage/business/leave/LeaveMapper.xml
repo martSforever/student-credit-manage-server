@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.creditmanage.business.leave.LeaveMapper">
+
+    <parameterMap id="paramMap" type="com.creditmanage.business.leave.Leave"/>
+    <resultMap id="resultMap" type="com.creditmanage.business.leave.Leave"/>
+
+    <sql id="selectAll">
+        select
+            t1.id                                           as id,
+            date_format(t1.created_at, '%Y-%m-%d %H:%i:%S') as createdAt,
+            date_format(t1.updated_at, '%Y-%m-%d %H:%i:%S') as updatedAt,
+
+            t1.code                                         as code,
+            t1.leave_reason                                 as leaveReason,
+            date_format(t1.leave_start_time, '%Y-%m-%d')    as startTime,
+            date_format(t1.leave_end_time, '%Y-%m-%d')      as endTime,
+            t1.course_id                                    as courseId,
+            t1.check_tea                                    as checkTea,
+            t1.check_status                                 as checkStatus,
+            t1.check_result                                 as checkResult,
+            date_format(t1.check_time, '%Y-%m-%d %H:%i:%S') as checkTime
+
+    </sql>
+    <sql id="fromAll">
+        from stu_leave  t1
+    </sql>
+    <sql id="whereAll">
+        <foreach collection="query.filters" open="where 1=1 " item="item">
+            ${item.getFilterSql()}
+        </foreach>
+    </sql>
+    <sql id="orderAll">
+        <!--<if test="query.orders.size()>0">-->
+        <foreach collection="query.orders" open="order by" item="item" separator=",">
+            ${item.field} ${item.orderVal()}
+        </foreach>
+        <!--</if>-->
+    </sql>
+
+    <select id="queryOne" resultMap="resultMap" parameterMap="paramMap">
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        where t1.id = #{id}
+    </select>
+
+    <select id="queryAll" resultMap="resultMap" parameterMap="paramMap">
+        select * from (
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        ) as temp
+        <include refid="whereAll"/>
+        <include refid="orderAll"/>
+    </select>
+
+    <select id="queryPage" resultMap="resultMap" parameterMap="paramMap">
+        select * from (
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        ) as temp
+        <include refid="whereAll"/>
+        <include refid="orderAll"/>
+        limit ${(query.page-1)*query.pageSize},${query.pageSize}
+    </select>
+
+    <select id="queryCount" resultType="java.lang.Integer" parameterMap="paramMap">
+        select count(1) from (
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        ) as temp
+        <include refid="whereAll"/>
+    </select>
+
+    <insert id="insert" parameterMap="paramMap">
+        insert into
+            stu_leave
+            (id, created_at, updated_at, code, leave_reason, leave_start_time, leave_end_time, course_id,
+             check_tea, check_status, check_result, check_time)
+            value
+            (#{id}, now(), now(), #{code}, #{leaveReason}, str_to_date(#{startTime}, '%Y-%m-%d'),
+                    str_to_date(#{endTime}, '%Y-%m-%d'), #{courseId}, #{checkTea}, #{checkStatus}, #{checkResult},
+             #{checkTime})
+    </insert>
+
+    <update id="update" parameterMap="paramMap">
+        update stu_leave
+        <set>
+            updated_at = now(),
+            <if test="code !=null and code !=''">code = #{code},</if>
+            <if test="leave_reason !=null and leave_reason !=''">leave_reason = #{leaveReason},</if>
+            <if test="leave_start_time !=null and leave_start_time !=''">leave_start_time = #{startTime},</if>
+            <if test="leave_end_time !=null and leave_end_time !=''">leave_end_time = #{endTime},</if>
+            <if test="course_id !=null and course_id !=''">course_id = #{courseId},</if>
+            <if test="check_tea !=null and check_tea !=''">check_tea = #{checkTea},</if>
+            <if test="check_status !=null and check_status !=''">check_status = #{checkStatus},</if>
+            <if test="check_result !=null and check_result !=''">check_result = #{checkResult},</if>
+            <if test="check_time !=null and check_time !=''">check_time = #{checkTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterMap="paramMap">
+        delete from stu_leave
+        where id = #{id}
+    </delete>
+
+</mapper>
