@@ -8,6 +8,25 @@ public class BasicModel {
     private String updatedAt;
     private Query query;
 
+    private String queryType;
+    private String queryValue;
+
+    public String getQueryType() {
+        return queryType;
+    }
+
+    public void setQueryType(String queryType) {
+        this.queryType = queryType;
+    }
+
+    public String getQueryValue() {
+        return queryValue;
+    }
+
+    public void setQueryValue(String queryValue) {
+        this.queryValue = queryValue;
+    }
+
     public Query getQuery() {
         return query;
     }
