@@ -1,12 +1,12 @@
 mybatis:
-    type-aliases-package: com.amvue.amvueserver
+    type-aliases-package: com.creditmanage
     configuration:
         map-underscore-to-camel-case: true
         default-fetch-size: 100
         default-statement-timeout: 30
         log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     config-location: classpath:mybatis-config.xml
-    mapper-locations: classpath*:com/amvue/**/*Mapper.xml
+    mapper-locations: classpath*:com/creditmanage/**/*Mapper.xml
 
 server:
   port: 8989
