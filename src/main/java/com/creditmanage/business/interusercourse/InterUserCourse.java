@@ -11,6 +11,15 @@ public class InterUserCourse extends BasicModel {
     private String userTeacherName;                                 //辅导员名称
     private String courseName;                                      //课程名称
     private String courseTeacherName;                               //课程任课老师
+    private String className;                                       //学生班级
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
     public String getUserId() {
         return userId;

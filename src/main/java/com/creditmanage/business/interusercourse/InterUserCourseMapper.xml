@@ -18,7 +18,9 @@
             t2.name                                         as courseName,
             t3.name                                         as courseTeacherName,
             t4.name                                         as userName,
-            t6.name                                         as userTeacherName
+            t6.name                                         as userTeacherName,
+            concat(t5.grade, '级', t5.cls, '班')              as className
+
     </sql>
     <sql id="fromAll">
 
