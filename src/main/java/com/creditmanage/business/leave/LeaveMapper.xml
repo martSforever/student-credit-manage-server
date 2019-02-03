@@ -22,6 +22,8 @@
             t1.audit_result                                 as auditResult,
             date_format(t1.audit_time, '%Y-%m-%d %H:%i:%S') as auditTime,
             t1.other_reason                                 as otherReason,
+            t1.audit_comment                                as auditComment,
+
             t2.name                                         as studentName,
             t3.name                                         as teacherName,
             concat(t4.grade, '级', t4.cls, '班')              as className
@@ -81,9 +83,9 @@
 
     <insert id="insert" parameterMap="paramMap">
         insert into stu_leave
-        (id, created_at, updated_at, student_id, reason, start_time, end_time, audit_teacher_id, audit_status, audit_result, audit_time, other_reason)
+        (id, created_at, updated_at, student_id, reason, start_time, end_time, audit_teacher_id, audit_status, audit_result, audit_time, other_reason, audit_comment)
         values
-            (#{id}, now(), now(), #{studentId}, #{reason}, #{startTime}, #{endTime}, #{auditTeacherId}, #{auditStatus}, #{auditResult}, #{auditTime}, #{otherReason})
+            (#{id}, now(), now(), #{studentId}, #{reason}, #{startTime}, #{endTime}, #{auditTeacherId}, #{auditStatus}, #{auditResult}, #{auditTime}, #{otherReason}, #{auditComment})
     </insert>
 
     <update id="update" parameterMap="paramMap">
@@ -100,6 +102,7 @@
             <if test="auditResult !=null and auditResult !=''">audit_result = #{auditResult},</if>
             <if test="auditTime !=null and auditTime !=''">audit_time =str_to_date(#{auditTime},'%Y-%m-%d %H:%i:%S'),</if>
             <if test="otherReason !=null and otherReason !=''">other_reason = #{otherReason},</if>
+            <if test="auditComment !=null and auditComment !=''">audit_comment = #{auditComment},</if>
 
         </set>
         where id = #{id}

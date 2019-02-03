@@ -12,10 +12,19 @@ public class Leave extends BasicModel {
     private String auditResult;                     //审批结果
     private String auditTime;                       //审批时间
     private String otherReason;                     //其他原因
+    private String auditComment;                    //审核备注
 
     private String studentName;                     //请假学生名称
     private String teacherName;                     //审批老师名称
     private String className;                       //请假学生班级
+
+    public String getAuditComment() {
+        return auditComment;
+    }
+
+    public void setAuditComment(String auditComment) {
+        this.auditComment = auditComment;
+    }
 
     public String getOtherReason() {
         return otherReason;
