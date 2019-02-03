@@ -13,19 +13,25 @@
             date_format(t1.created_at, '%Y-%m-%d %H:%i:%S') as createdAt,
             date_format(t1.updated_at, '%Y-%m-%d %H:%i:%S') as updatedAt,
 
-            t1.code                                         as code,
-            t1.leave_reason                                 as leaveReason,
-            date_format(t1.leave_start_time, '%Y-%m-%d')    as startTime,
-            date_format(t1.leave_end_time, '%Y-%m-%d')      as endTime,
-            t1.course_id                                    as courseId,
-            t1.check_tea                                    as checkTea,
-            t1.check_status                                 as checkStatus,
-            t1.check_result                                 as checkResult,
-            date_format(t1.check_time, '%Y-%m-%d %H:%i:%S') as checkTime
+            t1.student_id                                   as studentId,
+            t1.reason                                       as reason,
+            date_format(t1.start_time, '%Y-%m-%d %H:%i:%S') as startTime,
+            date_format(t1.end_time, '%Y-%m-%d %H:%i:%S')   as endTime,
+            t1.audit_teacher_id                             as auditTeacherId,
+            t1.audit_status                                 as auditStatus,
+            t1.audit_result                                 as auditResult,
+            date_format(t1.audit_time, '%Y-%m-%d %H:%i:%S') as auditTime,
+            t1.other_reason                                 as otherReason,
+            t2.name                                         as studentName,
+            t3.name                                         as teacherName,
+            concat(t4.grade, '级', t4.cls, '班')              as className
 
     </sql>
     <sql id="fromAll">
-        from stu_leave  t1
+        from stu_leave t1
+        left join user t2 on t1.student_id = t2.id
+        left join user t3 on t1.audit_teacher_id = t3.id
+        left join cls t4 on t2.class_id = t4.id
     </sql>
     <sql id="whereAll">
         <foreach collection="query.filters" open="where 1=1 " item="item">
@@ -74,29 +80,27 @@
     </select>
 
     <insert id="insert" parameterMap="paramMap">
-        insert into
-            stu_leave
-            (id, created_at, updated_at, code, leave_reason, leave_start_time, leave_end_time, course_id,
-             check_tea, check_status, check_result, check_time)
-            value
-            (#{id}, now(), now(), #{code}, #{leaveReason}, str_to_date(#{startTime}, '%Y-%m-%d'),
-                    str_to_date(#{endTime}, '%Y-%m-%d'), #{courseId}, #{checkTea}, #{checkStatus}, #{checkResult},
-             #{checkTime})
+        insert into stu_leave
+        (id, created_at, updated_at, student_id, reason, start_time, end_time, audit_teacher_id, audit_status, audit_result, audit_time, other_reason)
+        values
+            (#{id}, now(), now(), #{studentId}, #{reason}, #{startTime}, #{endTime}, #{auditTeacherId}, #{auditStatus}, #{auditResult}, #{auditTime}, #{otherReason})
     </insert>
 
     <update id="update" parameterMap="paramMap">
+
         update stu_leave
         <set>
             updated_at = now(),
-            <if test="code !=null and code !=''">code = #{code},</if>
-            <if test="leave_reason !=null and leave_reason !=''">leave_reason = #{leaveReason},</if>
-            <if test="leave_start_time !=null and leave_start_time !=''">leave_start_time = #{startTime},</if>
-            <if test="leave_end_time !=null and leave_end_time !=''">leave_end_time = #{endTime},</if>
-            <if test="course_id !=null and course_id !=''">course_id = #{courseId},</if>
-            <if test="check_tea !=null and check_tea !=''">check_tea = #{checkTea},</if>
-            <if test="check_status !=null and check_status !=''">check_status = #{checkStatus},</if>
-            <if test="check_result !=null and check_result !=''">check_result = #{checkResult},</if>
-            <if test="check_time !=null and check_time !=''">check_time = #{checkTime},</if>
+            <if test="studentId !=null and studentId !=''">student_id = #{studentId},</if>
+            <if test="reason !=null and reason !=''">reason = #{reason},</if>
+            <if test="startTime !=null and startTime !=''">start_time = str_to_date(#{startTime}, '%Y-%m-%d %H:%i:%S'),</if>
+            <if test="endTime !=null and endTime !=''">end_time =str_to_date({endTime},'%Y-%m-%d %H:%i:%S'),</if>
+            <if test="auditTeacherId !=null and auditTeacherId !=''">audit_teacher_id = #{auditTeacherId},</if>
+            <if test="auditStatus !=null and auditStatus !=''">audit_status = #{auditStatus},</if>
+            <if test="auditResult !=null and auditResult !=''">audit_result = #{auditResult},</if>
+            <if test="auditTime !=null and auditTime !=''">audit_time =str_to_date(#{auditTime},'%Y-%m-%d %H:%i:%S'),</if>
+            <if test="otherReason !=null and otherReason !=''">other_reason = #{otherReason},</if>
+
         </set>
         where id = #{id}
     </update>

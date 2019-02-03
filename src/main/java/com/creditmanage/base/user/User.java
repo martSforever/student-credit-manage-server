@@ -14,6 +14,24 @@ public class User extends BasicModel {
     private String classId;                         //所属班级id
 
     private String className;                       //班级名称
+    private String classTeacherId;                  //班级辅导员id
+    private String classTeacherName;                //班级辅导员名称
+
+    public String getClassTeacherId() {
+        return classTeacherId;
+    }
+
+    public void setClassTeacherId(String classTeacherId) {
+        this.classTeacherId = classTeacherId;
+    }
+
+    public String getClassTeacherName() {
+        return classTeacherName;
+    }
+
+    public void setClassTeacherName(String classTeacherName) {
+        this.classTeacherName = classTeacherName;
+    }
 
     public String getClassName() {
         return className;
