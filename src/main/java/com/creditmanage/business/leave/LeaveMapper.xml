@@ -96,7 +96,7 @@
             <if test="studentId !=null and studentId !=''">student_id = #{studentId},</if>
             <if test="reason !=null and reason !=''">reason = #{reason},</if>
             <if test="startTime !=null and startTime !=''">start_time = str_to_date(#{startTime}, '%Y-%m-%d %H:%i:%S'),</if>
-            <if test="endTime !=null and endTime !=''">end_time =str_to_date({endTime},'%Y-%m-%d %H:%i:%S'),</if>
+            <if test="endTime !=null and endTime !=''">end_time =str_to_date(#{endTime},'%Y-%m-%d %H:%i:%S'),</if>
             <if test="auditTeacherId !=null and auditTeacherId !=''">audit_teacher_id = #{auditTeacherId},</if>
             <if test="auditStatus !=null and auditStatus !=''">audit_status = #{auditStatus},</if>
             <if test="auditResult !=null and auditResult !=''">audit_result = #{auditResult},</if>
