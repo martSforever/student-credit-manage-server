@@ -13,18 +13,29 @@
             date_format(t1.created_at, '%Y-%m-%d %H:%i:%S') as createdAt,
             date_format(t1.updated_at, '%Y-%m-%d %H:%i:%S') as updatedAt,
 
-            t1.class_id                                     as classId,
-            t1.add_score                                    as addScore,
-            t1.decrease                                     as decrease,
-            t1.reason                                       as reason,
-            t1.suggestions                                  as suggestions,
-            concat(t2.grade, '级', t2.cls, '班')              as className
+            t1.course_id                                    as courseId,
+            t1.student_id                                   as studentId,
+            t1.comment                                      as comment,
+            t1.type                                         as type,
+            t1.score                                        as score,
+            date_format(t1.check_time, '%Y-%m-%d')          as checkTime,
 
+            t2.name                                         as courseName,
+            t3.name                                         as studentName,
+            t3.code                                         as studentCode,
+            t3.tel                                          as studentTel,
+            concat(t4.grade, '级', t4.cls, '班')              as studentClassName,
+            t5.name                                         as studentTeacherName,
+            t6.name                                         as courseTeacherName
     </sql>
     <sql id="fromAll">
-        from stu_score  t1
-        left join cls t2 on t1.class_id = t2.id
+        from stu_score t1
 
+        left join course t2 on t1.course_id = t2.id
+        left join user t3 on t1.student_id = t3.id
+        left join cls t4 on t3.class_id = t4.id
+        left join user t5 on t4.teacher_id = t5.id
+        left join user t6 on t2.teacher_id = t6.id
     </sql>
     <sql id="whereAll">
         <foreach collection="query.filters" open="where 1=1 " item="item">
@@ -73,25 +84,22 @@
     </select>
 
     <insert id="insert" parameterMap="paramMap">
-        insert into
-            stu_score
-            (id, created_at, updated_at, name, class_id, add_score, decrease,
-             reason, suggestions)
-            value
-            (#{id}, now(), now(), #{name}, #{classId}, #{addScore}, #{decrease}, #{reason},
-             #{suggestions})
+        insert into stu_score
+        (id, created_at, updated_at, course_id, student_id, type, comment, score, check_time)
+        values
+            (#{id}, now(), now(), #{courseId}, #{studentId}, #{type}, #{comment}, #{score}, str_to_date(#{checkTime}, '%Y-%m-%d'))
     </insert>
 
     <update id="update" parameterMap="paramMap">
         update stu_score
         <set>
             updated_at = now(),
-            <if test="name !=null and name !=''">name = #{name},</if>
-            <if test="class_id !=null and class_id !=''">class_id = #{classId},</if>
-            <if test="add_score !=null and add_score !=''">add_score = #{addScore},</if>
-            <if test="decrease !=null and decrease !=''">decrease = #{decrease},</if>
-            <if test="reason !=null and reason !=''">reason = #{reason},</if>
-            <if test="suggestions !=null and suggestions !=''">suggestions = #{suggestions},</if>
+            <if test="courseId !=null and courseId !=''">course_id = #{courseId},</if>
+            <if test="studentId !=null and studentId !=''">student_id = #{studentId},</if>
+            <if test="type !=null and type !=''">type = #{type},</if>
+            <if test="comment !=null and comment !=''">comment = #{comment},</if>
+            <if test="score !=null and score !=''">score = #{score},</if>
+            <if test="checkTime !=null and checkTime !=''">check_time = str_to_date(#{checkTime}, '%Y-%m-%d'),</if>
         </set>
         where id = #{id}
     </update>

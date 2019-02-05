@@ -4,80 +4,122 @@ import com.creditmanage.core.basic.BasicModel;
 
 public class Score extends BasicModel {
 
-    private String name;                       //学生姓名
-    private String code;                       //学生姓名
-    private String classId;                    //班级
-    private String addScore;                   //加分
-    private String decrease;                   //减分
-    private String reason;                     //问题
-    private String suggestions;                //老师建议
-    private String className;                  //班级名称
+    private String courseId;                        //课程id
+    private String studentId;                       //学生id
+    private String type;                            //考评性质
+    private String comment;                         //考评备注
+    private String score;                           //得分扣分情况
+    private String checkTime;                       //考评时间
 
+    private String courseName;                      //课程名称
+    private String studentName;                     //学生名称
+    private String studentCode;                     //学生学号
+    private String studentTeacherName;              //学生辅导员姓名
+    private String studentTel;                      //学生联系电话
+    private String studentClassName;                //学生班级
+    private String courseTeacherName;               //课程任课老师名称
 
-    public String getCode() {
-        return code;
+    public String getCheckTime() {
+        return checkTime;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCheckTime(String checkTime) {
+        this.checkTime = checkTime;
     }
 
-    public String getReason() {
-        return reason;
+    public String getCourseId() {
+        return courseId;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 
-    public String getClassName() {
-        return className;
-
+    public String getStudentId() {
+        return studentId;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getClassId() {
-        return classId;
+    public String getComment() {
+        return comment;
     }
 
-    public void setClassId(String classId) {
-        this.classId = classId;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-
-
-    public String getAddScore() {
-        return addScore;
+    public String getScore() {
+        return score;
     }
 
-    public void setAddScore(String addScore) {
-        this.addScore = addScore;
+    public void setScore(String score) {
+        this.score = score;
     }
 
-    public String getDecrease() {
-        return decrease;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setDecrease(String decrease) {
-        this.decrease = decrease;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
-    public String getSuggestions() {
-        return suggestions;
+    public String getStudentName() {
+        return studentName;
     }
 
-    public void setSuggestions(String suggestions) {
-        this.suggestions = suggestions;
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getStudentCode() {
+        return studentCode;
+    }
+
+    public void setStudentCode(String studentCode) {
+        this.studentCode = studentCode;
+    }
+
+    public String getStudentTeacherName() {
+        return studentTeacherName;
+    }
+
+    public void setStudentTeacherName(String studentTeacherName) {
+        this.studentTeacherName = studentTeacherName;
+    }
+
+    public String getStudentTel() {
+        return studentTel;
+    }
+
+    public void setStudentTel(String studentTel) {
+        this.studentTel = studentTel;
+    }
+
+    public String getStudentClassName() {
+        return studentClassName;
+    }
+
+    public void setStudentClassName(String studentClassName) {
+        this.studentClassName = studentClassName;
+    }
+
+    public String getCourseTeacherName() {
+        return courseTeacherName;
+    }
+
+    public void setCourseTeacherName(String courseTeacherName) {
+        this.courseTeacherName = courseTeacherName;
     }
 }
