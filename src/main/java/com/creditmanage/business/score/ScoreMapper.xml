@@ -19,6 +19,7 @@
             t1.type                                         as type,
             t1.score                                        as score,
             date_format(t1.check_time, '%Y-%m-%d %H:%i:%S') as checkTime,
+            t1.check_teacher_id                             as checkTeacherId,
 
             t2.name                                         as courseName,
             t3.name                                         as studentName,
@@ -26,7 +27,8 @@
             t3.tel                                          as studentTel,
             concat(t4.grade, '级', t4.cls, '班')              as studentClassName,
             t5.name                                         as studentTeacherName,
-            t6.name                                         as courseTeacherName
+            t6.name                                         as courseTeacherName,
+            t7.name                                         as checkTeacherName
     </sql>
     <sql id="fromAll">
         from stu_score t1
@@ -36,6 +38,7 @@
         left join cls t4 on t3.class_id = t4.id
         left join user t5 on t4.teacher_id = t5.id
         left join user t6 on t2.teacher_id = t6.id
+        left join user t7 on t7.id = t1.check_teacher_id
     </sql>
     <sql id="whereAll">
         <foreach collection="query.filters" open="where 1=1 " item="item">
@@ -85,9 +88,9 @@
 
     <insert id="insert" parameterMap="paramMap">
         insert into stu_score
-        (id, created_at, updated_at, course_id, student_id, type, comment, score, check_time)
+        (id, created_at, updated_at, course_id, student_id, type, comment, score, check_time, check_teacher_id)
         values
-            (#{id}, now(), now(), #{courseId}, #{studentId}, #{type}, #{comment}, #{score}, str_to_date(#{checkTime}, '%Y-%m-%d %H:%i:%S'))
+            (#{id}, now(), now(), #{courseId}, #{studentId}, #{type}, #{comment}, #{score}, str_to_date(#{checkTime}, '%Y-%m-%d %H:%i:%S'), #{checkTeacherId})
     </insert>
 
     <update id="update" parameterMap="paramMap">
@@ -99,7 +102,8 @@
             <if test="type !=null and type !=''">type = #{type},</if>
             <if test="comment !=null and comment !=''">comment = #{comment},</if>
             <if test="score !=null and score !=''">score = #{score},</if>
-            <if test="checkTime !=null and checkTime !=''">check_time = str_to_date(#{checkTime}, '%Y-%m-%d  %H:%i:%S'),</if>
+            <if test="checkTime !=null and checkTime !=''">check_time = str_to_date(#{checkTime}, '%Y-%m-%d %H:%i:%S'),</if>
+            <if test="checkTeacherId !=null and checkTeacherId !=''">check_teacher_id = #{checkTeacherId},</if>
         </set>
         where id = #{id}
     </update>

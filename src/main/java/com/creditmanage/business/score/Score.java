@@ -10,6 +10,7 @@ public class Score extends BasicModel {
     private String comment;                         //考评备注
     private String score;                           //得分扣分情况
     private String checkTime;                       //考评时间
+    private String checkTeacherId;                  //考评老师id
 
     private String courseName;                      //课程名称
     private String studentName;                     //学生名称
@@ -18,6 +19,23 @@ public class Score extends BasicModel {
     private String studentTel;                      //学生联系电话
     private String studentClassName;                //学生班级
     private String courseTeacherName;               //课程任课老师名称
+    private String checkTeacherName;                //考评老师名称
+
+    public String getCheckTeacherId() {
+        return checkTeacherId;
+    }
+
+    public void setCheckTeacherId(String checkTeacherId) {
+        this.checkTeacherId = checkTeacherId;
+    }
+
+    public String getCheckTeacherName() {
+        return checkTeacherName;
+    }
+
+    public void setCheckTeacherName(String checkTeacherName) {
+        this.checkTeacherName = checkTeacherName;
+    }
 
     public String getCheckTime() {
         return checkTime;
