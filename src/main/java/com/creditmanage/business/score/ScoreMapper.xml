@@ -18,7 +18,7 @@
             t1.comment                                      as comment,
             t1.type                                         as type,
             t1.score                                        as score,
-            date_format(t1.check_time, '%Y-%m-%d')          as checkTime,
+            date_format(t1.check_time, '%Y-%m-%d %H:%i:%S') as checkTime,
 
             t2.name                                         as courseName,
             t3.name                                         as studentName,
@@ -87,7 +87,7 @@
         insert into stu_score
         (id, created_at, updated_at, course_id, student_id, type, comment, score, check_time)
         values
-            (#{id}, now(), now(), #{courseId}, #{studentId}, #{type}, #{comment}, #{score}, str_to_date(#{checkTime}, '%Y-%m-%d'))
+            (#{id}, now(), now(), #{courseId}, #{studentId}, #{type}, #{comment}, #{score}, str_to_date(#{checkTime}, '%Y-%m-%d %H:%i:%S'))
     </insert>
 
     <update id="update" parameterMap="paramMap">
@@ -99,7 +99,7 @@
             <if test="type !=null and type !=''">type = #{type},</if>
             <if test="comment !=null and comment !=''">comment = #{comment},</if>
             <if test="score !=null and score !=''">score = #{score},</if>
-            <if test="checkTime !=null and checkTime !=''">check_time = str_to_date(#{checkTime}, '%Y-%m-%d'),</if>
+            <if test="checkTime !=null and checkTime !=''">check_time = str_to_date(#{checkTime}, '%Y-%m-%d  %H:%i:%S'),</if>
         </set>
         where id = #{id}
     </update>
