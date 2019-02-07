@@ -18,7 +18,19 @@
             t1.teacher_id                                   as teacherId,
 
             t2.name                                         as teacherName,
-            concat(t1.grade, '级', t1.cls, '班')             as fullName
+            concat(t1.grade, '级', t1.cls, '班')              as fullName,
+
+
+            (select sum(s1.score)
+             from stu_score s1
+                 left join user s2 on s1.student_id = s2.id
+             where s2.class_id = t1.id
+                   and s1.score <![CDATA[>]]> 0)                     as increaseScore,
+            (select sum(s1.score)
+             from stu_score s1
+                 left join user s2 on s1.student_id = s2.id
+             where s2.class_id = t1.id
+                   and s1.score <![CDATA[<]]> 0)                     as decreaseScore
     </sql>
     <sql id="fromAll">
         from cls t1

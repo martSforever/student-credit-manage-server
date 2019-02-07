@@ -4,12 +4,30 @@ import com.creditmanage.core.basic.BasicModel;
 
 public class Cls extends BasicModel {
 
-    String grade;               //年级
-    String cls;                 //班级
-    String teacherId;           //辅导员id
+    private String grade;               //年级
+    private String cls;                 //班级
+    private String teacherId;           //辅导员id
 
-    String teacherName;         //辅导员姓名
-    String fullName;            //班级名称
+    private String teacherName;         //辅导员姓名
+    private String fullName;            //班级名称
+    private String increaseScore;       //班级学生加分总数
+    private String decreaseScore;       //班级学生扣分总数
+
+    public String getIncreaseScore() {
+        return increaseScore;
+    }
+
+    public void setIncreaseScore(String increaseScore) {
+        this.increaseScore = increaseScore;
+    }
+
+    public String getDecreaseScore() {
+        return decreaseScore;
+    }
+
+    public void setDecreaseScore(String decreaseScore) {
+        this.decreaseScore = decreaseScore;
+    }
 
     public String getGrade() {
         return grade;
