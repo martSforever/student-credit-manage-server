@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -30,5 +31,20 @@ public class UserServiceImpl extends BasicServiceImpl<User> implements UserServi
         user.setUsername(user.getCode());                               //用户名为工号/学号
         userMapper.insert(user);
         return ControllerUtils.success(null);
+    }
+
+    @Override
+    public List<User> queryPage(User user) throws Exception {
+        List<User> ret = super.queryPage(user);
+        for (int i = 0; i < ret.size(); i++) {
+            User item = ret.get(i);
+            if (StringUtils.isBlank(item.getIncreaseScore())) {
+                item.setIncreaseScore("0");
+            }
+            if (StringUtils.isBlank(item.getDecreaseScore())) {
+                item.setDecreaseScore("0");
+            }
+        }
+        return ret;
     }
 }

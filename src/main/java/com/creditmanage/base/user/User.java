@@ -16,6 +16,24 @@ public class User extends BasicModel {
     private String className;                       //班级名称
     private String classTeacherId;                  //班级辅导员id
     private String classTeacherName;                //班级辅导员名称
+    private String increaseScore;                   //考评加分总分
+    private String decreaseScore;                   //考评扣分总分
+
+    public String getIncreaseScore() {
+        return increaseScore;
+    }
+
+    public void setIncreaseScore(String increaseScore) {
+        this.increaseScore = increaseScore;
+    }
+
+    public String getDecreaseScore() {
+        return decreaseScore;
+    }
+
+    public void setDecreaseScore(String decreaseScore) {
+        this.decreaseScore = decreaseScore;
+    }
 
     public String getClassTeacherId() {
         return classTeacherId;
