@@ -12,6 +12,24 @@ public class InterUserCourse extends BasicModel {
     private String courseName;                                      //课程名称
     private String courseTeacherName;                               //课程任课老师
     private String className;                                       //学生班级
+    private String increaseScore;                                   //学生加分
+    private String decreaseScore;                                   //学生扣分
+
+    public String getIncreaseScore() {
+        return increaseScore;
+    }
+
+    public void setIncreaseScore(String increaseScore) {
+        this.increaseScore = increaseScore;
+    }
+
+    public String getDecreaseScore() {
+        return decreaseScore;
+    }
+
+    public void setDecreaseScore(String decreaseScore) {
+        this.decreaseScore = decreaseScore;
+    }
 
     public String getClassName() {
         return className;

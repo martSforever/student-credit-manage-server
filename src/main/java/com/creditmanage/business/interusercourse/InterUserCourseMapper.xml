@@ -8,19 +8,38 @@
     <resultMap id="resultMap" type="com.creditmanage.business.interusercourse.InterUserCourse"/>
 
     <sql id="selectAll">
-        select
-            t1.id                                           as id,
+        <trim prefix="select" suffixOverrides=",">
+
+            t1.id as id,
             date_format(t1.created_at, '%Y-%m-%d %H:%i:%S') as createdAt,
             date_format(t1.updated_at, '%Y-%m-%d %H:%i:%S') as updatedAt,
 
-            t1.user_id                                      as userId,
-            t1.course_id                                    as courseId,
-            t2.name                                         as courseName,
-            t3.name                                         as courseTeacherName,
-            t4.name                                         as userName,
-            t6.name                                         as userTeacherName,
-            concat(t5.grade, '级', t5.cls, '班')              as className
+            t1.user_id as userId,
+            t1.course_id as courseId,
+            t2.name as courseName,
+            t3.name as courseTeacherName,
+            t4.name as userName,
+            t6.name as userTeacherName,
+            concat(t5.grade, '级', t5.cls, '班') as className,
 
+            <if test="attr1!=null and attr1=='allScore'">
+                (select sum(s1.score)
+                from stu_score s1
+                where s1.student_id = t1.user_id and s1.score <![CDATA[>]]> 0) as increaseScore,
+                (select sum(s1.score)
+                from stu_score s1
+                where s1.student_id = t1.user_id and s1.score <![CDATA[<]]> 0) as decreaseScore,
+            </if>
+
+            <if test="attr1!=null and attr1=='courseScore'">
+                (select sum(s1.score)
+                from stu_score s1
+                where s1.student_id = t1.user_id and s1.score <![CDATA[>]]> 0 and s1.course_id = #{attr2}) as increaseScore,
+                (select sum(s1.score)
+                from stu_score s1
+                where s1.student_id = t1.user_id and s1.score <![CDATA[<]]> 0 and s1.course_id = #{attr2}) as decreaseScore,
+            </if>
+        </trim>
     </sql>
     <sql id="fromAll">
 
