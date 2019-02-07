@@ -4,10 +4,28 @@ import com.creditmanage.core.basic.BasicModel;
 
 public class Course extends BasicModel {
 
-    String name;                            //课程名称
-    String teacherId;                       //课程任课老师id
+    private String name;                            //课程名称
+    private String teacherId;                       //课程任课老师id
 
-    String teacherName;                     //任课老师名字
+    private String teacherName;                     //任课老师名字
+    private String increaseScore;                   //加分
+    private String decreaseScore;                   //扣分
+
+    public String getIncreaseScore() {
+        return increaseScore;
+    }
+
+    public void setIncreaseScore(String increaseScore) {
+        this.increaseScore = increaseScore;
+    }
+
+    public String getDecreaseScore() {
+        return decreaseScore;
+    }
+
+    public void setDecreaseScore(String decreaseScore) {
+        this.decreaseScore = decreaseScore;
+    }
 
     public String getName() {
         return name;
