@@ -1,4 +1,4 @@
-package com.creditmanage.business.store;
+package com.creditmanage.business.message;
 
 import com.creditmanage.core.basic.BasicController;
 import com.creditmanage.core.basic.BasicService;
@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("store")
-public class StoreController extends BasicController<Store> {
+@RequestMapping("message")
+public class MessageController extends BasicController<Message> {
 
     @Resource
-    private StoreService storeService;
+    private MessageService messageService;
 
     @Override
-    public BasicService<Store> getBasicService() throws Exception {
-        return storeService;
+    public BasicService<Message> getBasicService() throws Exception {
+        return messageService;
     }
 }

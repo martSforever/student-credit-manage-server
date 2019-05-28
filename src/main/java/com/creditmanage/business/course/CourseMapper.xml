@@ -62,6 +62,20 @@
         <include refid="orderAll"/>
     </select>
 
+    <select id="queryCourse" resultMap="resultMap" parameterMap="paramMap">
+        select
+        t1.name                                      as name,
+        (select sum(s1.score)
+        from stu_score s1
+        where s1.course_id = t1.id and s1.score <![CDATA[>]]> 0) as increaseScore,
+        (select sum(s1.score)
+        from stu_score s1
+        where s1.course_id = t1.id and s1.score <![CDATA[<]]> 0) as decreaseScore
+        from course t1
+        left join user t2 on t1.teacher_id = t2.id
+        where t1.teacher_id =#{teacherId}
+    </select>
+
     <select id="queryPage" resultMap="resultMap" parameterMap="paramMap">
         select * from (
         <include refid="selectAll"/>

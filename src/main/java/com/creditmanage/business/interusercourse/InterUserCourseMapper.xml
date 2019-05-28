@@ -69,6 +69,21 @@
         where t1.id = #{id}
     </select>
 
+    <select id="queryCourseScore" resultMap="resultMap" parameterMap="paramMap">
+        select
+        t3.name    as courseName,
+        (select sum(score)
+        from stu_score s3
+        where 1 = 1 and s3.score <![CDATA[>]]> 0 and s3.student_id = t1.user_id and t1.course_id = s3.course_id) as increaseScore,
+        (select sum(score)
+        from stu_score s3
+        where 1 = 1 and s3.score <![CDATA[<]]> 0 and s3.student_id = t1.user_id and t1.course_id = s3.course_id) as decreaseScore
+        from inter_user_course t1
+        left join course t3 on t1.course_id = t3.id
+        left join  user t2 on t1.user_id = t2.id
+        where t1.user_id = #{userId}
+    </select>
+
     <select id="queryAll" resultMap="resultMap" parameterMap="paramMap">
         select * from (
         <include refid="selectAll"/>

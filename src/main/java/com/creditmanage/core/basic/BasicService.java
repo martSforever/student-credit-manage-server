@@ -24,6 +24,6 @@ public interface BasicService<T> {
 
     Integer multiDelete(List<T> accts) throws Exception;
 
-    BasicMapper<T> basicMapper() throws Exception;
+       BasicMapper<T> basicMapper() throws Exception;
 
 }

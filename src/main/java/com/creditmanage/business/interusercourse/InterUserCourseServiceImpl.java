@@ -33,4 +33,10 @@ public class InterUserCourseServiceImpl extends BasicServiceImpl<InterUserCourse
         }
         return ret;
     }
+
+    public List<InterUserCourse> queryCourseScore(InterUserCourse interUserCourse) throws Exception {
+        return interUserCourseMapper.queryCourseScore(interUserCourse);
+    }
 }
+
+

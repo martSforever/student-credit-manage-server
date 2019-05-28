@@ -18,6 +18,15 @@ public class User extends BasicModel {
     private String classTeacherName;                //班级辅导员名称
     private String increaseScore;                   //考评加分总分
     private String decreaseScore;                   //考评扣分总分
+    private String allScore;                        //总分
+
+    public String getAllScore() {
+        return allScore;
+    }
+
+    public void setAllScore(String allScore) {
+        this.allScore = allScore;
+    }
 
     public String getIncreaseScore() {
         return increaseScore;
