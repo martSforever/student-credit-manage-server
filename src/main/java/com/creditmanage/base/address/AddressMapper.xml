@@ -12,11 +12,11 @@
                date_format(t1.created_at, '%Y-%m-%d %H:%i:%S') as createdAt,
                date_format(t1.updated_at, '%Y-%m-%d %H:%i:%S') as updatedAt,
                t1.name                                         as name,
-               t1.parentid                                     as parentid,
-               t1.parentname                                   as parentname,
-               t1.areacode                                     as areacode,
-               t1.zipcode                                      as zipcode,
-               t1.depth                                        as depth
+               t1.pid                                          as pid,
+               t1.deep                                         as deep,
+               t1.spell                                        as spell,
+               t1.ext_id                                       as extId,
+               t1.ext_name                                     as extName
     </sql>
     <sql id="fromAll">
         from pl_address t1
@@ -69,9 +69,9 @@
 
     <insert id="insert" parameterMap="paramMap">
         insert into pl_address
-            (id, created_at, updated_at, name, parentid, parentname, areacode, zipcode, depth)
+            (id, created_at, updated_at, name, pid, deep, spell, ext_id, ext_name)
             value
-            (#{id}, now(), now(), #{name},#{parentid},#{parentname},#{areacode},#{zipcode},#{depth})
+            (#{id}, now(), now(), #{name}, #{pid}, #{deep}, #{spell}, #{extId}, #{extName})
     </insert>
 
     <update id="update" parameterMap="paramMap">
@@ -79,11 +79,11 @@
         <set>
             updated_at = now(),
             <if test="name !=null and name !=''">name = #{name},</if>
-            <if test="parentid !=null and parentid !=''">parentid = #{parentid},</if>
-            <if test="parentname !=null and parentname !=''">parentname = #{parentname},</if>
-            <if test="areacode !=null and areacode !=''">areacode = #{areacode},</if>
-            <if test="zipcode !=null and zipcode !=''">zipcode = #{zipcode},</if>
-            <if test="depth !=null and depth !=''">depth = #{depth},</if>
+            <if test="pid !=null and pid !=''">pid = #{pid},</if>
+            <if test="deep !=null and deep !=''">deep = #{deep},</if>
+            <if test="spell !=null and spell !=''">spell = #{spell},</if>
+            <if test="extId !=null and extId !=''">ext_id = #{extId},</if>
+            <if test="extName !=null and extName !=''">ext_name = #{extName},</if>
         </set>
         where id = #{id}
     </update>

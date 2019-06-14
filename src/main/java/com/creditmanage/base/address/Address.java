@@ -4,12 +4,12 @@ import com.creditmanage.core.basic.BasicModel;
 
 public class Address extends BasicModel {
 
-    private String name;                        //名称
-    private String parentid;                    //上级id
-    private String parentname;                  //上级名称
-    private String areacode;                    //区号
-    private String zipcode;                     //邮编
-    private String depth;                       //区域等级
+    private String name;                                //名称
+    private String pid;                                 //pid'
+    private String deep;                                //深度
+    private String spell;                               //拼音
+    private String extId;                              //拓展编号
+    private String extName;                            //拓展名称
 
     public String getName() {
         return name;
@@ -19,43 +19,43 @@ public class Address extends BasicModel {
         this.name = name;
     }
 
-    public String getParentid() {
-        return parentid;
+    public String getPid() {
+        return pid;
     }
 
-    public void setParentid(String parentid) {
-        this.parentid = parentid;
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
-    public String getParentname() {
-        return parentname;
+    public String getDeep() {
+        return deep;
     }
 
-    public void setParentname(String parentname) {
-        this.parentname = parentname;
+    public void setDeep(String deep) {
+        this.deep = deep;
     }
 
-    public String getAreacode() {
-        return areacode;
+    public String getSpell() {
+        return spell;
     }
 
-    public void setAreacode(String areacode) {
-        this.areacode = areacode;
+    public void setSpell(String spell) {
+        this.spell = spell;
     }
 
-    public String getZipcode() {
-        return zipcode;
+    public String getExtId() {
+        return extId;
     }
 
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void setExtId(String extId) {
+        this.extId = extId;
     }
 
-    public String getDepth() {
-        return depth;
+    public String getExtName() {
+        return extName;
     }
 
-    public void setDepth(String depth) {
-        this.depth = depth;
+    public void setExtName(String extName) {
+        this.extName = extName;
     }
 }
