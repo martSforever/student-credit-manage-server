@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.creditmanage.base.address.AddressMapper">
+
+    <parameterMap id="paramMap" type="com.creditmanage.base.address.Address"/>
+    <resultMap id="resultMap" type="com.creditmanage.base.address.Address"/>
+
+    <sql id="selectAll">
+        select t1.id                                           as id,
+               date_format(t1.created_at, '%Y-%m-%d %H:%i:%S') as createdAt,
+               date_format(t1.updated_at, '%Y-%m-%d %H:%i:%S') as updatedAt,
+               t1.name                                         as name,
+               t1.parentid                                     as parentid,
+               t1.parentname                                   as parentname,
+               t1.areacode                                     as areacode,
+               t1.zipcode                                      as zipcode,
+               t1.depth                                        as depth
+    </sql>
+    <sql id="fromAll">
+        from pl_address t1
+    </sql>
+    <sql id="whereAll">
+        <foreach collection="query.filters" open="where 1=1 " item="item">
+            ${item.getFilterSql()}
+        </foreach>
+    </sql>
+    <sql id="orderAll">
+        <!--<if test="query.orders.size()>0">-->
+        <foreach collection="query.orders" open="order by" item="item" separator=",">
+            ${item.field} ${item.orderVal()}
+        </foreach>
+        <!--</if>-->
+    </sql>
+
+    <select id="queryOne" resultMap="resultMap" parameterMap="paramMap">
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        where t1.id = #{id}
+    </select>
+
+    <select id="queryAll" resultMap="resultMap" parameterMap="paramMap">
+        select * from (
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        ) as temp
+        <include refid="whereAll"/>
+        <include refid="orderAll"/>
+    </select>
+
+    <select id="queryPage" resultMap="resultMap" parameterMap="paramMap">
+        select * from (
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        ) as temp
+        <include refid="whereAll"/>
+        <include refid="orderAll"/>
+        limit ${(query.page-1)*query.pageSize},${query.pageSize}
+    </select>
+
+    <select id="queryCount" resultType="java.lang.Integer" parameterMap="paramMap">
+        select count(1) from (
+        <include refid="selectAll"/>
+        <include refid="fromAll"/>
+        ) as temp
+        <include refid="whereAll"/>
+    </select>
+
+    <insert id="insert" parameterMap="paramMap">
+        insert into pl_address
+            (id, created_at, updated_at, name, parentid, parentname, areacode, zipcode, depth)
+            value
+            (#{id}, now(), now(), #{name},#{parentid},#{parentname},#{areacode},#{zipcode},#{depth})
+    </insert>
+
+    <update id="update" parameterMap="paramMap">
+        update pl_address
+        <set>
+            updated_at = now(),
+            <if test="name !=null and name !=''">name = #{name},</if>
+            <if test="parentid !=null and parentid !=''">parentid = #{parentid},</if>
+            <if test="parentname !=null and parentname !=''">parentname = #{parentname},</if>
+            <if test="areacode !=null and areacode !=''">areacode = #{areacode},</if>
+            <if test="zipcode !=null and zipcode !=''">zipcode = #{zipcode},</if>
+            <if test="depth !=null and depth !=''">depth = #{depth},</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterMap="paramMap">
+        delete
+        from pl_address
+        where id = #{id}
+    </delete>
+
+</mapper>
