@@ -1,19 +1,6 @@
 package com.creditmanage.core.mybatis.hotreload;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
@@ -21,7 +8,13 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.log4j.Logger;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
-import com.google.common.collect.Sets;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * 刷新MyBatis Mapper XML 线程
@@ -32,69 +25,33 @@ import com.google.common.collect.Sets;
 public class MapperRefresh implements Runnable {
 
     public static Logger log = Logger.getLogger(MapperRefresh.class);
-    private static String filename = "mybatis-refresh.properties";
-    private static Properties prop = new Properties();
 
-    private static boolean enabled;         // 是否启用Mapper刷新线程功能  
-    private static boolean refresh;         // 刷新启用后，是否启动了刷新线程  
+    private static boolean refresh;                              // 刷新启用后，是否启动了刷新线程
 
-    private Set<String> location;         // Mapper实际资源路径  
+    private Set<String> location;                               // Mapper实际资源路径
 
-    private Resource[] mapperLocations;     // Mapper资源路径  
-    private Configuration configuration;        // MyBatis配置对象  
+    private Resource[] mapperLocations;                         // Mapper资源路径
+    private Configuration configuration;                        // MyBatis配置对象
 
-    private Long beforeTime = 0L;           // 上一次刷新时间  
-    private static int delaySeconds;        // 延迟刷新秒数  
-    private static int sleepSeconds;        // 休眠时间  
-    private static String mappingPath;      // xml文件夹匹配字符串，需要根据需要修改  
+    private Long beforeTime = 0L;                               // 上一次刷新时间
 
-    static {
-
-//        try {  
-//            prop.load(MapperRefresh.class.getResourceAsStream(filename));  
-//        } catch (Exception e) {  
-//            e.printStackTrace();  
-//            System.out.println("Load mybatis-refresh “"+filename+"” file error.");  
-//        }  
-
-
-        URL url = MapperRefresh.class.getClassLoader().getResource(filename);
-        InputStream is;
-        try {
-            is = url.openStream();
-            if (is == null) {
-                log.warn("applicationConfig.properties not found.");
-            } else {
-                prop.load(is);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String value = getPropString("enabled");
-        System.out.println(value);
-        enabled = "true".equalsIgnoreCase(value);
-
-        delaySeconds = getPropInt("delaySeconds");
-        sleepSeconds = getPropInt("sleepSeconds");
-        mappingPath = getPropString("mappingPath");
-
-        delaySeconds = delaySeconds == 0 ? 50 : delaySeconds;
-        sleepSeconds = sleepSeconds == 0 ? 3 : sleepSeconds;
-        mappingPath = StringUtils.isBlank(mappingPath) ? "mappings" : mappingPath;
-
-        log.debug("[enabled] " + enabled);
-        log.debug("[delaySeconds] " + delaySeconds);
-        log.debug("[sleepSeconds] " + sleepSeconds);
-        log.debug("[mappingPath] " + mappingPath);
-    }
+    private boolean enabled;                                    // 是否启用Mapper刷新线程功能
+    private int delaySeconds;                                   // 延迟刷新秒数
+    private int sleepSeconds;                                   // 休眠时间
+    private String mappingPath;                                 // xml文件夹匹配字符串，需要根据需要修改
 
     public static boolean isRefresh() {
         return refresh;
     }
 
-    public MapperRefresh(Resource[] mapperLocations, Configuration configuration) {
+    public MapperRefresh(Resource[] mapperLocations, Configuration configuration, MybatisRefreshProperties mybatisRefreshProperties) {
         this.mapperLocations = mapperLocations;
         this.configuration = configuration;
+
+        this.enabled = mybatisRefreshProperties.getEnable();
+        this.delaySeconds = mybatisRefreshProperties.getDelaySeconds();
+        this.sleepSeconds = mybatisRefreshProperties.getSleepSeconds();
+        this.mappingPath = mybatisRefreshProperties.getMappingPath();
     }
 
     @Override
@@ -274,31 +231,6 @@ public class MapperRefresh implements Runnable {
             return true;
         }
         return false;
-    }
-
-    /**
-     * 获取整数属性
-     *
-     * @param key
-     * @return
-     */
-    private static int getPropInt(String key) {
-        int i = 0;
-        try {
-            i = Integer.parseInt(getPropString(key));
-        } catch (Exception e) {
-        }
-        return i;
-    }
-
-    /**
-     * 获取字符串属性
-     *
-     * @param key
-     * @return
-     */
-    private static String getPropString(String key) {
-        return prop == null ? null : prop.getProperty(key).trim();
     }
 
     /**

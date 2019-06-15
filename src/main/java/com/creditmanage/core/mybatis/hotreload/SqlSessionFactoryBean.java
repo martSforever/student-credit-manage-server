@@ -16,17 +16,6 @@ package com.creditmanage.core.mybatis.hotreload;
  * limitations under the License.
  */
 
-import static org.springframework.util.Assert.notNull;
-import static org.springframework.util.ObjectUtils.isEmpty;
-import static org.springframework.util.StringUtils.hasLength;
-import static org.springframework.util.StringUtils.tokenizeToStringArray;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.apache.ibatis.builder.xml.XMLConfigBuilder;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
@@ -52,6 +41,16 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Properties;
+
+import static org.springframework.util.Assert.notNull;
+import static org.springframework.util.ObjectUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasLength;
+import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 
 /**
@@ -113,6 +112,12 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
     private ObjectFactory objectFactory;
 
     private ObjectWrapperFactory objectWrapperFactory;
+
+    private MybatisRefreshProperties mybatisRefreshProperties;
+
+    public SqlSessionFactoryBean(MybatisRefreshProperties mybatisRefreshProperties) {
+        this.mybatisRefreshProperties = mybatisRefreshProperties;
+    }
 
     /**
      * Sets the ObjectFactory.
@@ -477,7 +482,9 @@ public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, In
             }
 
             // ThinkGem 启动刷新MapperXML定时器（有助于开发者调试）。
-            new MapperRefresh(this.mapperLocations, configuration).run();
+            if (mybatisRefreshProperties.getEnable()) {
+                new MapperRefresh(this.mapperLocations, configuration, mybatisRefreshProperties).run();
+            }
 
         } else {
             if (LOGGER.isDebugEnabled()) {

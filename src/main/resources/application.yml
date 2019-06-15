@@ -1,13 +1,17 @@
 mybatis:
-    type-aliases-package: com.creditmanage
-    configuration:
-        map-underscore-to-camel-case: true
-        default-fetch-size: 100
-        default-statement-timeout: 30
-        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    config-location: classpath:mybatis-config.xml
-    mapper-locations: classpath*:com/creditmanage/**/*Mapper.xml
-
+  type-aliases-package: com.creditmanage
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath*:com/creditmanage/**/*Mapper.xml
+mybatis-refresh:
+  enable: true
+  delaySeconds: 5
+  sleepSeconds: 3
+  mappingPath: creditmanage
 server:
   port: 8989
 spring:
